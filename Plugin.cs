@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using HarmonyLib;
 using MyBox;
 using System;
@@ -10,6 +11,19 @@ using UnityEngine.UIElements;
 
 namespace AudioSettings
 {
+    [BepInPlugin(TRANSLATOR_GUID, TRANSLATOR_NAME, TRANSLATOR_VERSION)]
+    public class Translator : BaseUnityPlugin
+    {
+        public const string TRANSLATOR_GUID = PluginInfo.PLUGIN_GUID + ".Translations";
+        public const string TRANSLATOR_NAME = PluginInfo.PLUGIN_NAME + " Translations";
+        public const string TRANSLATOR_VERSION = PluginInfo.PLUGIN_VERSION;
+        public static ConfigFile Config { get; private set; }
+        public void Awake()
+        {
+            //Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            Config = base.Config;
+        }
+    }
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class Plugin : BaseUnityPlugin
     {

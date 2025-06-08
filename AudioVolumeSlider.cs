@@ -19,6 +19,8 @@ namespace AudioSettings
             SliderCount = 0;
         }
         public ConfigEntry<float> Volume { get; set; }
+        public ConfigEntry<string> TranslatedName { get; set; }
+        public ConfigEntry<string> TranslatedDescription { get; set; }
         public void Add(AudioSource source, float multiplier)
         {
             if (Sources.Any(x => x.source == source))
@@ -44,6 +46,8 @@ namespace AudioSettings
             Description = description;
             Console.WriteLine("Volume slider \"" + name + "\" initiated.");
             Volume = Config.Bind(name, "Volume", 1f, description + "\nValue goes from 0 to 1.");
+            TranslatedName = Translator.Config.Bind(name, "Name", name);
+            TranslatedDescription = Translator.Config.Bind(name, "Description", description);
             Volume.SettingChanged += Volume_SettingChanged;
             ValueLastTick = Volume.Value;
         }
@@ -67,9 +71,9 @@ namespace AudioSettings
             var rectDescLabel = new Rect(10, SliderCount * 50 + 30, width, 25);
             var rectPercLabel = new Rect(width * (2f / 7f), SliderCount * 50 + 10, width * (0.5f / 7f), 25);
 
-            GUI.Label(rectNameLabel, Name, new GUIStyle { alignment = TextAnchor.MiddleLeft, normal = font });
+            GUI.Label(rectNameLabel, TranslatedName.Value, new GUIStyle { alignment = TextAnchor.MiddleLeft, normal = font });
             GUI.Label(rectPercLabel, Volume.Value.ToString("##0%"), new GUIStyle { alignment = TextAnchor.MiddleRight, normal = font });
-            GUI.Label(rectDescLabel, Description, new GUIStyle { alignment = TextAnchor.MiddleLeft, normal = font });
+            GUI.Label(rectDescLabel, TranslatedDescription.Value, new GUIStyle { alignment = TextAnchor.MiddleLeft, normal = font });
 
             var rect = new Rect(width * (2.5f / 7f) + 10, SliderCount * 50 + 16, width * (4.5f / 7f), 25);
             var style = new GUIStyle(GUI.skin.horizontalSlider);
